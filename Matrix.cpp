@@ -40,6 +40,10 @@ Matrix<T>::~Matrix()
 {
     for (size_t i = 0; i < rows; i++)
     {
+        for (size_t j = 0; j < cols; j++)
+        {
+            matrix[i][j] = T{};
+        }
         delete[] matrix[i];
         matrix[i] = nullptr;
     }
