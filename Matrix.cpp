@@ -1,5 +1,3 @@
-#include "Matrix.hpp"
-
 // Costruttore
 template<typename T>
 Matrix<T>::Matrix(const size_t& number_of_rows, const size_t& number_of_columns) : rows(number_of_rows), cols(number_of_columns)

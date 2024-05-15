@@ -21,4 +21,6 @@ public:
     ~Matrix();
 };
 
+#include "Matrix.cpp"
+
 #endif
