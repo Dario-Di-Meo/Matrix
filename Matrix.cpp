@@ -1,14 +1,14 @@
-// Costruttore
+// Constructor
 template<typename T>
 Matrix<T>::Matrix(const size_t& number_of_rows, const size_t& number_of_columns) : rows(number_of_rows), cols(number_of_columns)
 {
-    this->matrix = new T*[rows];
+    data = new T*[rows];
     for (size_t i = 0; i < rows; i++)
     {
-        matrix[i] = new T[cols];
+        data[i] = new T[cols];
     }
 }
-// Riempie la matrice con l'input dell'utente
+// Fills the matrix with user input
 template<typename T>
 void Matrix<T>::fill()
 {
@@ -17,11 +17,11 @@ void Matrix<T>::fill()
         for (size_t j = 0; j < cols; j++)
         {
             std::cout << "Matrix[" << i << "][" << j << "] = ";
-            std::cin >> matrix[i][j];
+            std::cin >> data[i][j];
         }
     }
 }
-// Stampa la matrice
+// Prints the elements of the matrix in a grid
 template<typename T>
 void Matrix<T>::print() const
 {
@@ -29,24 +29,38 @@ void Matrix<T>::print() const
     {
         for (size_t j = 0; j < cols; j++)
         {
-            std::cout << matrix[i][j] << " ";
+            std::cout << data[i][j] << " ";
         }
         std::cout << std::endl;
     }  
 }
-// Distruttore
+// Performs element-wise multiplication of rows and columns
+template<typename T>
+void Matrix<T>::multiply(const Matrix<T>& left_matrix, const Matrix<T>& right_matrix) requires std::is_arithmetic_v<T>
+{
+    if ((this->cols == left_matrix.cols) && (this->rows == right_matrix.rows) && (left_matrix.cols == right_matrix.rows))
+    {
+        for (size_t i = 0; i < this->rows; i++)
+        {
+            for (size_t j = 0; j < this->cols; j++)
+            {
+                this->data[i][j] = 0;
+                for (size_t k = 0; k < left_matrix.cols; k++)
+                {
+                    this->data[i][j] += left_matrix.data[i][k] * right_matrix.data[k][j];                    
+                }
+            }      
+        }
+    }
+    else
+    {
+        throw std::invalid_argument("Row or column numbers of involved matrices do not match.");
+    }
+}
+// Destructor
 template<typename T>
 Matrix<T>::~Matrix()
 {
-    for (size_t i = 0; i < rows; i++)
-    {
-        for (size_t j = 0; j < cols; j++)
-        {
-            matrix[i][j] = T{};
-        }
-        delete[] matrix[i];
-        matrix[i] = nullptr;
-    }
-    delete[] matrix;
-    matrix = nullptr; 
+    delete[] data;
+    data = nullptr; 
 }

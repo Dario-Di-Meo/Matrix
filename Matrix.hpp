@@ -2,22 +2,26 @@
 #define MATRIX_HPP
 
 #include <iostream>
+#include <concepts>
 
 template <typename T>
 class Matrix
 {
 private:
-    size_t rows;
-    size_t cols;
-    T** matrix;
+
 public:
-    // Costruttore
+    const size_t rows;
+    const size_t cols;
+    T** data; 
+    // Constructor
     Matrix(const size_t& number_of_rows, const size_t& number_of_columns);
-    // Riempie la matrice con l'input dell'utente
+    // Fills the matrix with user input
     void fill();
-    // Stampa la matrice
+    // Prints the elements of the matrix in a grid
     void print() const;
-    // Distruttore
+    // Performs element-wise multiplication of rows and columns
+    void multiply(const Matrix<T>& left_matrix, const Matrix<T>& right_matrix) requires std::is_arithmetic_v<T>;
+    // Destructor
     ~Matrix();
 };
 
