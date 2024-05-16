@@ -1,3 +1,4 @@
+
 // Constructor
 template<typename T>
 Matrix<T>::Matrix(const size_t& number_of_rows, const size_t& number_of_columns) : rows(number_of_rows), cols(number_of_columns)
@@ -8,6 +9,43 @@ Matrix<T>::Matrix(const size_t& number_of_rows, const size_t& number_of_columns)
         data[i] = new T[cols];
     }
 }
+
+// Equality operator
+template<typename T>
+bool Matrix<T>::operator==(const Matrix<T>& matrix) const noexcept
+{
+    if ((this->rows == matrix.rows) && (this->cols == matrix.cols))
+    {
+        bool mismatch = false;
+        size_t i = 0;
+        while ((i < rows) && (!mismatch))
+        {
+            size_t j = 0;
+            while ((j < cols) && (!mismatch))
+            {
+                if (this->data[i][j] != matrix.data[i][j])
+                {
+                    mismatch = true;
+                }
+                j++;
+            }
+            i++;
+        }
+        return !mismatch; 
+    }
+    else
+    {
+        return false;
+    }  
+}
+
+// Inequality operator
+template<typename T>
+bool Matrix<T>::operator!=(const Matrix<T>& matrix) const noexcept
+{
+    return !(*this == matrix);
+}
+
 // Fills the matrix with user input
 template<typename T>
 void Matrix<T>::fill()
@@ -21,6 +59,7 @@ void Matrix<T>::fill()
         }
     }
 }
+
 // Prints the elements of the matrix in a grid
 template<typename T>
 void Matrix<T>::print() const
@@ -34,6 +73,7 @@ void Matrix<T>::print() const
         std::cout << std::endl;
     }  
 }
+
 // Performs element-wise multiplication of rows and columns
 template<typename T>
 void Matrix<T>::multiply(const Matrix<T>& left_matrix, const Matrix<T>& right_matrix) requires std::is_arithmetic_v<T>
@@ -57,6 +97,7 @@ void Matrix<T>::multiply(const Matrix<T>& left_matrix, const Matrix<T>& right_ma
         throw std::invalid_argument("Row or column numbers of involved matrices do not match.");
     }
 }
+
 // Destructor
 template<typename T>
 Matrix<T>::~Matrix()
